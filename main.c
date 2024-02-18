@@ -1174,8 +1174,11 @@ void manageAnimation(side *side, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     side->mouse.y = GetMouseY()-2.5;
 
     if (CheckCollisionRecs(side->mouse, hitBox) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-        if (side->blackRect.x > (float)SCREEN_WIDTH/2) side->blackRect.x -= SPEED;
-    }else if (side->blackRect.x < SCREEN_WIDTH) side->blackRect.x += SPEED;
+        if (side->blackRect.x > (float)SCREEN_WIDTH/2) side->blackRect.x -= DEVIDER*2;
+    }else if (side->blackRect.x < SCREEN_WIDTH) side->blackRect.x += DEVIDER*2;
+
+    if (side->blackRect.x+side->blackRect.width < SCREEN_WIDTH) side->blackRect.x = SCREEN_WIDTH-side->blackRect.width;
+    
 
 }
 
