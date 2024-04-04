@@ -2,7 +2,6 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 
 #include "raylib.h"
 
@@ -17,8 +16,8 @@ int main(){
     int choice;
 
     //these could have been global variables too but I decided to make them normal ones
-    int SCREEN_WIDTH = 1800;
-    int SCREEN_HEIGHT = 980;
+    int SCREEN_WIDTH = 1920;
+    int SCREEN_HEIGHT = 1080;
     bool playing = true;
 
     //topbar with buttons already declared here couse its going to be the same for every one of them
@@ -28,7 +27,7 @@ int main(){
 
     //set srand seed and init raylib window
     srand(time(NULL));
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "sorting");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "cSort");
 
     //set the fps as the standard fps and set the standard topbar
     SetTargetFPS(STDFPS);
@@ -291,14 +290,13 @@ void catchPlaying(bool *playing, int* fps, button array[]){
 
 void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
     int i = 0, ii = 0, minIdx = 0, fps = STDFPS;
+    bool exit = false;
 
     bottom bottom;
     side side;
     element array[DIM]; //uses a constant declared at the start of the stack (no heap used)
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'S', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'S', &bottom, &side);
 
     for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER)-1; i++){
         algorithm->forCicles++;
@@ -314,14 +312,10 @@ void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCR
                 algorithm->comparison++;
                 ii++;
             }
-            
-            if (IsKeyDown(KEY_ENTER)) return;
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            drawAll(array, topBar, "selectionSort", ii, ii, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "selectionSort");
+            if (IsKeyDown(KEY_ENTER))
+                return;
         }
 
         swap(&array[minIdx].value, &array[i].value);
@@ -339,9 +333,7 @@ void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WI
     side side;
     element array[DIM];
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'B', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'B', &bottom, &side);
 
     while (!isSorted){
         algorithm->forCicles++;
@@ -370,15 +362,9 @@ void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WI
                 ii++;
             }
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            if (IsKeyPressed(KEY_ENTER)){
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, ii, ii, bottom, &side, &fps, algorithm, "badSort");
+            if (IsKeyDown(KEY_ENTER))
                 return;
-            }
-
-            drawAll(array, topBar, "badSort", ii, ii, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
     }
 
@@ -393,9 +379,7 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
     side side;
     element array[DIM];
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'O', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'O', &bottom, &side);
 
     while (!isSorted && !WindowShouldClose()){
         algorithm->forCicles++;
@@ -416,15 +400,9 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
                 algorithm->comparison++;
             }
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            if (IsKeyPressed(KEY_ENTER)){
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "oddEvenSort");
+            if (IsKeyDown(KEY_ENTER))
                 return;
-            }
-
-            drawAll(array, topBar, "oddEvenSort", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
 
         for (i = 1; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose(); i = i){
@@ -441,15 +419,9 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
                 i += 2;
             }
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            if (IsKeyPressed(KEY_ENTER)){
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "oddEvenSort");
+            if (IsKeyDown(KEY_ENTER))
                 return;
-            }
-
-            drawAll(array, topBar, "oddEvenSort", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
     }
 
@@ -464,9 +436,7 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
     side side;
     element array[DIM];
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'H', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'H', &bottom, &side);
 
     while (swapped && !WindowShouldClose()){
         algorithm->forCicles++;
@@ -485,22 +455,15 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
                 i += 1;
             }
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            if (IsKeyPressed(KEY_ENTER)){
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "cocktailShakerSort");
+            if (IsKeyDown(KEY_ENTER))
                 return;
-            }
-
-            drawAll(array, topBar, "cocktailShakerSort", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
 
         if (!swapped) {break;}
         algorithm->comparison++;
 
         swapped = false;
-        end -= 1;
 
         for (i = end; i > start && !WindowShouldClose();){
             if (*playing){
@@ -515,15 +478,9 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
                 i -= 1;
             }
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            if (IsKeyPressed(KEY_ENTER)){
-                return;
-            }
-
-            drawAll(array, topBar, "cocktailShakerSort", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "cocktailShakerSort");
+            if (IsKeyDown(KEY_ENTER))
+                return;    
         }
 
         start += 1;
@@ -540,9 +497,7 @@ void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
     side side;
     element array[DIM];
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'B', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'B', &bottom, &side);
 
     while (!isSorted){
         algorithm->forCicles++;
@@ -561,15 +516,9 @@ void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
                 ii++;
             }
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            if (IsKeyPressed(KEY_ENTER)){
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, ii, ii, bottom, &side, &fps, algorithm, "bubbleSort");
+            if (IsKeyDown(KEY_ENTER))
                 return;
-            }
-
-            drawAll(array, topBar, "bubbleSort", ii, ii, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
 
         a--;
@@ -587,10 +536,9 @@ void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
 
     setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
     setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'G', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'G', &bottom, &side);
 
     while (!WindowShouldClose() && index < (int)(SCREEN_WIDTH/DEVIDER)){
-
         if (*playing){
             while (index != 0 && array[index].value < array[index-1].value){
                 algorithm->forCicles++;
@@ -605,30 +553,22 @@ void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
             index += 1;
         }
 
-        topBarInteraction(topBar, playing);
-        catchPlaying(playing, &fps, topBar);
-        manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        if (IsKeyPressed(KEY_ENTER)){
+        betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, index, index, bottom, &side, &fps, algorithm, "gnomeSort");
+        if (IsKeyDown(KEY_ENTER))
             return;
-        }
-
-        drawAll(array, topBar, "gnomeSort", index, index, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
     }
 
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int i = 0, ii, fps = STDFPS; 
+    int i = 0, ii, fps = STDFPS;
     
     bottom bottom;
     side side;
     element array[DIM];
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'I', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'I', &bottom, &side);
 
     while (!WindowShouldClose() && i < (int)(SCREEN_WIDTH/DEVIDER)) {
         algorithm->forCicles++;
@@ -643,15 +583,9 @@ void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCR
                 algorithm->comparison++;
             }
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-            if (IsKeyPressed(KEY_ENTER)){
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "insertionSort");
+            if (IsKeyDown(KEY_ENTER))
                 return;
-            }
-
-            drawAll(array, topBar, "insertionSort", i, ii, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
 
         i += 1;
@@ -668,9 +602,7 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
     side side;
     element array[DIM], output[DIM];
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'C', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'C', &bottom, &side);
 
     max = array[0].value;
 
@@ -684,13 +616,9 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             algorithm->comparison++;
         }
 
-        topBarInteraction(topBar, playing);
-        catchPlaying(playing, &fps, topBar);
-        manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        if (IsKeyPressed(KEY_ENTER)) return;
-
-        drawAll(array, topBar, "countSort", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+        betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
+        if (IsKeyDown(KEY_ENTER))
+            return;
     }
 
     for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose();){
@@ -701,13 +629,9 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             algorithm->writesSecond++;
         }
 
-        topBarInteraction(topBar, playing);
-        catchPlaying(playing, &fps, topBar);
-        manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        if (IsKeyPressed(KEY_ENTER)) return;
-
-        drawAll(array, topBar, "countSort (memoryKiller)", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+        betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
+        if (IsKeyDown(KEY_ENTER))
+            return;
     }
 
     for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose();){
@@ -718,13 +642,9 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             algorithm->writesSecond++;
         }
 
-        topBarInteraction(topBar, playing);
-        catchPlaying(playing, &fps, topBar);
-        manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        if (IsKeyPressed(KEY_ENTER)) return;
-
-        drawAll(array, topBar, "countSort (memoryKiller)", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+        betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
+        if (IsKeyDown(KEY_ENTER))
+            return;
     }
 
     for (i = 1; i <= max && !WindowShouldClose();) {
@@ -735,13 +655,9 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             algorithm->writesSecond++;
         }
 
-        topBarInteraction(topBar, playing);
-        catchPlaying(playing, &fps, topBar);
-        manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        if (IsKeyPressed(KEY_ENTER)) return;
-
-        drawAll(array, topBar, "countSort (memoryKiller)", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+        betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
+        if (IsKeyDown(KEY_ENTER))
+            return;
     }
 
     for (i = (int)(SCREEN_WIDTH/DEVIDER)-1; i >= 0 && !WindowShouldClose();){
@@ -753,13 +669,9 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             algorithm->writesSecond += 2;
         }
 
-        topBarInteraction(topBar, playing);
-        catchPlaying(playing, &fps, topBar);
-        manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        if (IsKeyPressed(KEY_ENTER)) return;
-
-        drawAll(array, topBar, "countSort (memoryKiller)", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+        betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
+        if (IsKeyDown(KEY_ENTER))
+            return;
     }
 
     for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose();){
@@ -770,13 +682,9 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             algorithm->writesMain++;
         }
 
-        topBarInteraction(topBar, playing);
-        catchPlaying(playing, &fps, topBar);
-        manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        if (IsKeyPressed(KEY_ENTER)) return;
-
-        drawAll(array, topBar, "countSort (memoryKiller)", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+        betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
+        if (IsKeyDown(KEY_ENTER))
+            return;  
     }
 
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -789,9 +697,7 @@ void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
     side side;
     element array[DIM];
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 's', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 's', &bottom, &side);
 
     for (interval = n/2; interval > 0; interval /= 2){
         algorithm->forCicles++;
@@ -807,15 +713,9 @@ void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
                     algorithm->writesMain++;
                 }
 
-                topBarInteraction(topBar, playing);
-                catchPlaying(playing, &fps, topBar);
-                manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-                if (IsKeyPressed(KEY_ENTER)){
-                    return;
-                }
-
-                drawAll(array, topBar, "shellSort", i, ii, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+                betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "shellSort");
+                if (IsKeyDown(KEY_ENTER))
+                    return;  
             }
 
             array[ii].value = temp;
@@ -829,14 +729,15 @@ void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
 void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
     int fps = STDFPS, gap = DIM, i;
     bool swapped = true;
+    clock_t end, begin, result = 0;
 
     bottom bottom;
     side side;
     element array[DIM];
 
-    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
-    setSideAnimation(&side, 'c', SCREEN_WIDTH, SCREEN_HEIGHT);
+    sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'c', &bottom, &side);
+
+    begin = clock();
 
     while (gap != 1 || swapped){
         algorithm->forCicles++;
@@ -855,13 +756,14 @@ void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_W
                 i++;
             }
 
-            topBarInteraction(topBar, playing);
-            catchPlaying(playing, &fps, topBar);
-            manageAnimation(&side, SCREEN_WIDTH, SCREEN_HEIGHT);
+            end = clock();
+            result += end-begin;
 
-            if (IsKeyPressed(KEY_ENTER)) return;
+            betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "combSort");
+            if (IsKeyDown(KEY_ENTER))
+                return;    
 
-            drawAll(array, topBar, "combSort", i, i, &bottom, side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+            begin = clock();
         }
     }
 
@@ -1264,7 +1166,23 @@ void drawBox(algorithm algorithm){
     DrawText(TextFormat("switches: %d",algorithm.swaps), 20/2, 30*2 + increase, 20, LIGHTGRAY);
     DrawText(TextFormat("writes to secondary: %d",algorithm.writesSecond), 20/2, 30*2 + increase*2, 20, LIGHTGRAY);
     DrawText(TextFormat("iterations: %d",algorithm.forCicles), 20/2, 30*2 + increase*3, 20, LIGHTGRAY);
-
 }
 
+
 //--
+
+
+extern void betterSortingCode(element array[], button* topBar, bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT, int i, int ii, bottom bottom, side* side, int* fps, algorithm *algorithm, char string[]){
+
+    topBarInteraction(topBar, playing);
+    catchPlaying(playing, fps, topBar);
+    manageAnimation(side, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    drawAll(array, topBar, string, ii, ii, &bottom, *side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
+extern void sortingInit(int SCREEN_WIDTH, int SCREEN_HEIGHT, element array[], char type, bottom *bottom, side *side){
+    setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
+    setBottom(array, bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
+    setSideAnimation(side, type, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
