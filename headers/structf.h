@@ -1,5 +1,6 @@
-#include "raylib.h"
 #include <stdbool.h>
+#include <time.h>
+#include "raylib.h"
 
 typedef struct{
     int value;
@@ -75,16 +76,16 @@ extern void manageDeviderSlider(slider *slider);
 extern int getX(Color color);
 extern bool sameColors(Color color1, Color color2);
 
-extern void selectionSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void bubbleSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void gnomeSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void insertionSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void oddEvenSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void badSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void shakerSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void countingSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void shellSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void combSort(element array[], bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
 
 extern void catchPlaying(bool* playing, int* fps, button array[]);
 extern void through(element array[], bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT);
@@ -104,3 +105,6 @@ extern int nextGap(int gap);
 extern void drawBox(algorithm algorithm);
 extern int getMax(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern int partition(element array[], int l, int h);
+
+extern void betterSortingCode(element array[], button* topBar, bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT, int i, int ii, bottom bottom, side *side, int* fps, algorithm *algorithm, char string[]);
+extern void sortingInit(int SCREEN_WIDTH, int SCREEN_HEIGHT, element array[], char type, bottom *bottom, side *side);
