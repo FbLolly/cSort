@@ -5,6 +5,7 @@
 typedef struct{
     int value;
     Color color;
+    Color should;
     Rectangle Rect;
     Rectangle bottomRect;
 }element;
@@ -63,7 +64,7 @@ typedef struct{
 }colorSlider;
 
 int menu(int *SCREEN_WIDTH, int*SCREEN_HEIGHT);
-extern void setMenuRects(menuRect rects[], int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void setMenuRects(menuRect rects[], int SCREEN_WIDTH);
 extern void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void drawArray(element array[], Rectangle iiRect, int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void swap(int *n1, int *n2);
@@ -108,3 +109,4 @@ extern int partition(element array[], int l, int h);
 
 extern void betterSortingCode(element array[], button* topBar, bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT, int i, int ii, bottom bottom, side *side, int* fps, algorithm *algorithm, char string[]);
 extern void sortingInit(int SCREEN_WIDTH, int SCREEN_HEIGHT, element array[], char type, bottom *bottom, side *side);
+extern bool compareColor(Color color1, Color color2);
