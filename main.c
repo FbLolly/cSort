@@ -9,7 +9,7 @@
 #include "headers/structf.h"
 
 //global variable (its needed in the whole code)
-int DEVIDER = 2;
+int DIVIDER = 2;
 
 int main(){
     //menu choice
@@ -48,35 +48,35 @@ int main(){
         //switch on the menu choice
         switch (choice) {
             case 1:
-                selectionSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                selectionSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 2:
-                shakerSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                shakerSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 3:
-                bubbleSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                bubbleSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 4:
-                gnomeSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                gnomeSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 5:
-                insertionSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                insertionSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 6:
-                oddEvenSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                oddEvenSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 7:
-                badSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                badSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             //8 = quit
             case 9:
-                countingSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                countingSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 10:
-                shellSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                shellSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 11:
-                combSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DEVIDER));
+                combSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
             break;
             case 12:
                 settings();
@@ -96,8 +96,8 @@ int main(){
 void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     //this function just randomizes the array and sets its color
     int i;
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER); i++){
-        array[i].value = 5+(rand()%((int)(SCREEN_HEIGHT/DEVIDER) * 4/5));
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
+        array[i].value = 5+(rand()%((int)(SCREEN_HEIGHT/DIVIDER) * 4/5));
         array[i].value += 1;
         array[i].color = WHITE;
     }
@@ -106,23 +106,23 @@ void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
 void drawArray(element array[], Rectangle iiRect, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int i;
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER); i++){
-        array[i].Rect.x = i*(DEVIDER);
-        array[i].Rect.y = (SCREEN_HEIGHT-(array[i].value*(DEVIDER)))+(DEVIDER*2);
-        array[i].Rect.width = DEVIDER;
-        array[i].Rect.height = array[i].value*DEVIDER;
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
+        array[i].Rect.x = i*(DIVIDER);
+        array[i].Rect.y = (SCREEN_HEIGHT-(array[i].value*(DIVIDER)))+(DIVIDER*2);
+        array[i].Rect.width = DIVIDER;
+        array[i].Rect.height = array[i].value*DIVIDER;
 
         //draw the array
         DrawRectangleRec(iiRect, BLUE);
         DrawRectangleRec(array[i].Rect, array[i].color);
-        DrawRectangle(0, SCREEN_HEIGHT-(DEVIDER*3), SCREEN_WIDTH, DEVIDER*3, BLACK);
+        DrawRectangle(0, SCREEN_HEIGHT-(DIVIDER*3), SCREEN_WIDTH, DIVIDER*3, BLACK);
     }
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER); i++){
-        array[i].bottomRect.x = DEVIDER*i;
-        array[i].bottomRect.y = SCREEN_HEIGHT-(DEVIDER*3);
-        array[i].bottomRect.height = DEVIDER;
-        array[i].bottomRect.width = DEVIDER;
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
+        array[i].bottomRect.x = DIVIDER*i;
+        array[i].bottomRect.y = SCREEN_HEIGHT-(DIVIDER*3);
+        array[i].bottomRect.height = DIVIDER;
+        array[i].bottomRect.width = DIVIDER;
 
         //draw the bottom part of the array
         DrawRectangleRec(array[i].bottomRect, PINK);
@@ -139,7 +139,7 @@ void swap(int* n1, int* n2){
     *n2 = num;
 }
 
-void setMenuRects(menuRect rects[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
+void setMenuRects(menuRect rects[], int SCREEN_WIDTH){
     //SE
     int i;
 
@@ -191,7 +191,7 @@ int menu(int* SCREEN_WIDTH, int* SCREEN_HEIGHT){
     //load menu font
     Font font = LoadFont("fonts/CaskaydiaCoveNerdFontMono-Bold.ttf");
 
-    setMenuRects(menuRects, *SCREEN_WIDTH, *SCREEN_HEIGHT);
+    setMenuRects(menuRects, *SCREEN_WIDTH);
 
     mouse.height = 5;
     mouse.width = 5;
@@ -265,20 +265,20 @@ void catchPlaying(bool *playing, int* fps, button array[]){
 
     if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_RIGHT)){
         if (IsKeyPressed(KEY_LEFT))
-            if (*fps > 80-DEVIDER){*fps -= 80-DEVIDER;}
+            if (*fps > 80-DIVIDER){*fps -= 80-DIVIDER;}
         if (IsKeyPressed(KEY_RIGHT))
-            *fps += 80-DEVIDER;
+            *fps += 80-DIVIDER;
 
         SetTargetFPS(*fps);
     }
 
     if (array[1].active || array[2].active){
         if (array[1].active) {
-            if (*fps > 80-DEVIDER)
-                *fps -= 80-DEVIDER;
+            if (*fps > 80-DIVIDER)
+                *fps -= 80-DIVIDER;
             array[1].active = false;
         }
-        if (array[2].active) {*fps += 80-DEVIDER; array[2].active = false;}
+        if (array[2].active) {*fps += 80-DIVIDER; array[2].active = false;}
 
         SetTargetFPS(*fps);
     }
@@ -298,11 +298,11 @@ void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCR
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'S', &bottom, &side);
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER)-1; i++){
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER)-1; i++){
         algorithm->forCicles++;
         minIdx = i;
 
-        for (ii = i+1; ii < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose();){
+        for (ii = i+1; ii < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
 
             if (*playing){
                 algorithm->forCicles++;
@@ -326,7 +326,7 @@ void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCR
 }
 
 void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int ii = 0, a = (int)(SCREEN_WIDTH/DEVIDER), fps = STDFPS;
+    int ii = 0, a = (int)(SCREEN_WIDTH/DIVIDER), fps = STDFPS;
     bool isSorted = false;
 
     bottom bottom;
@@ -386,7 +386,7 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
 
         isSorted = true;
 
-        for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER)-1 && !WindowShouldClose(); i = i){
+        for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER)-1 && !WindowShouldClose(); i = i){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[i].value > array[i+1].value){
@@ -405,7 +405,7 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
                 return;
         }
 
-        for (i = 1; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose(); i = i){
+        for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose(); i = i){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[i].value > array[i+1].value){
@@ -429,7 +429,7 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
 }
 
 void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int n = (int)(SCREEN_WIDTH/DEVIDER), start = 0, i, fps = STDFPS, end = n-1;
+    int n = (int)(SCREEN_WIDTH/DIVIDER), start = 0, i, fps = STDFPS, end = n-1;
     bool swapped = true;
 
     bottom bottom;
@@ -490,7 +490,7 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
 }
 
 void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int ii = 0, a = (int)(SCREEN_WIDTH/DEVIDER), fps = STDFPS;
+    int ii = 0, a = (int)(SCREEN_WIDTH/DIVIDER), fps = STDFPS;
     bool isSorted = false;
 
     bottom bottom;
@@ -538,7 +538,7 @@ void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
     setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'G', &bottom, &side);
 
-    while (!WindowShouldClose() && index < (int)(SCREEN_WIDTH/DEVIDER)){
+    while (!WindowShouldClose() && index < (int)(SCREEN_WIDTH/DIVIDER)){
         if (*playing){
             while (index != 0 && array[index].value < array[index-1].value){
                 algorithm->forCicles++;
@@ -570,7 +570,7 @@ void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCR
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'I', &bottom, &side);
 
-    while (!WindowShouldClose() && i < (int)(SCREEN_WIDTH/DEVIDER)) {
+    while (!WindowShouldClose() && i < (int)(SCREEN_WIDTH/DIVIDER)) {
         algorithm->forCicles++;
         ii = i;
 
@@ -606,7 +606,7 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
 
     max = array[0].value;
 
-    for (i = 1; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose();){
+    for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             if (array[i].value > max)
@@ -621,7 +621,7 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             return;
     }
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose();){
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             count[i] = 0;
@@ -634,7 +634,7 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             return;
     }
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose();){
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             count[array[i].value]++;
@@ -660,7 +660,7 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             return;
     }
 
-    for (i = (int)(SCREEN_WIDTH/DEVIDER)-1; i >= 0 && !WindowShouldClose();){
+    for (i = (int)(SCREEN_WIDTH/DIVIDER)-1; i >= 0 && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             output[count[array[i].value] - 1].value = array[i].value;
@@ -674,7 +674,7 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
             return;
     }
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER) && !WindowShouldClose();){
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             array[i].value = output[i].value;
@@ -744,7 +744,7 @@ void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_W
         gap = nextGap(gap);
         swapped = false;
 
-        for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER)-gap && !WindowShouldClose();){
+        for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER)-gap && !WindowShouldClose();){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[i].value > array[i+gap].value){
@@ -774,14 +774,14 @@ void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_W
 //---------------------------
 
 void settings(){
-    //the settings change the global variable DEVIDER using a slider
+    //the settings change the global variable DIVIDER using a slider
 
     int i = 0;
     bool stop = false;
 
     //load the font
     Font font = LoadFont("fonts/CaskaydiaCoveNerdFontMono-Bold.ttf");
-    slider devider_slider;
+    slider DIVIDER_slider;
     Rectangle mouse;
 
     //at 1 am what do you do? code in C raylib
@@ -789,32 +789,32 @@ void settings(){
 
     SetTargetFPS(STDFPS*2);
 
-    setDeviderSlider(&devider_slider);
+    setDeviderSlider(&DIVIDER_slider);
 
     mouse.x = GetMouseX()-2.5;
     mouse.y = GetMouseY()-2.5;
     mouse.height = 5;
     mouse.width = 5;
-    devider_slider.slider.x = 10+(DEVIDER*11);
+    DIVIDER_slider.slider.x = 10+(DIVIDER*11);
 
     while (!WindowShouldClose() && !stop){
         mouse.x = GetMouseX()-2.5;
         mouse.y = GetMouseY()-2.5;
 
-        manageDeviderSlider(&devider_slider);
+        manageDeviderSlider(&DIVIDER_slider);
 
-        if (CheckCollisionRecs(mouse, devider_slider.Rect))
+        if (CheckCollisionRecs(mouse, DIVIDER_slider.Rect))
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-                if (! (devider_slider.slider.x < 10 || devider_slider.slider.x > 10+500+25))
-                    devider_slider.slider.x = mouse.x-((float)25/2);
+                if (! (DIVIDER_slider.slider.x < 10 || DIVIDER_slider.slider.x > 10+500+25))
+                    DIVIDER_slider.slider.x = mouse.x-((float)25/2);
 
 
         if (IsKeyPressed(KEY_ENTER)) stop = true;
 
         BeginDrawing();
-            DrawTexture(devider_slider.Texture, devider_slider.Rect.x, devider_slider.Rect.y, WHITE);
-            DrawTextEx(font, TextFormat("DEVIDER (2 - 40): %d",DEVIDER), (Vector2) {10+500+20, 10}, 25, 0, LIGHTGRAY);
-            DrawRectangle(devider_slider.slider.x, devider_slider.slider.y, devider_slider.slider.width, devider_slider.slider.height, BLACK);
+            DrawTexture(DIVIDER_slider.Texture, DIVIDER_slider.Rect.x, DIVIDER_slider.Rect.y, WHITE);
+            DrawTextEx(font, TextFormat("DIVIDER (2 - 40): %d",DIVIDER), (Vector2) {10+500+20, 10}, 25, 0, LIGHTGRAY);
+            DrawRectangle(DIVIDER_slider.slider.x, DIVIDER_slider.slider.y, DIVIDER_slider.slider.width, DIVIDER_slider.slider.height, BLACK);
             ClearBackground(DARKGRAY);
         EndDrawing();
     }
@@ -841,13 +841,13 @@ void setDeviderSlider(slider *slider){
 }
 
 void manageDeviderSlider(slider *slider){
-    //sets DEVIDER value using the X position of the slider as reference
-    DEVIDER = (int)((slider->slider.x - slider->Rect.x)/11);
+    //sets DIVIDER value using the X position of the slider as reference
+    DIVIDER = (int)((slider->slider.x - slider->Rect.x)/11);
 
-    //if the DEVIDER is bigger then its maximum or smaller then its minimum
+    //if the DIVIDER is bigger then its maximum or smaller then its minimum
     //it manages the exception
-    if (DEVIDER <= 1) DEVIDER = 2;
-    else if (DEVIDER > 40) DEVIDER = 40;
+    if (DIVIDER <= 1) DIVIDER = 2;
+    else if (DIVIDER > 40) DIVIDER = 40;
 
     if (slider->slider.x < 10) slider->slider.x = 10;
     else if (slider->slider.x > 10+500+25) slider->slider.x = 10+500+25; 
@@ -892,10 +892,10 @@ void through(element array[], bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT
 
     SetTargetFPS(STDFPS);
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER); i++)
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++)
         array[i].color = WHITE;
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER)-1 && !WindowShouldClose(); i = i){
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER)-1 && !WindowShouldClose(); i = i){
 
         iiRect.x = array[i].Rect.x;
         iiRect.y = array[i].Rect.y;
@@ -988,7 +988,7 @@ bool checkSorted(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int i;
     bool ret = true;
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DEVIDER); i++){
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
         if (array[i].value > array[i+1].value)
             ret = false;
     }
@@ -999,15 +999,17 @@ bool checkSorted(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
 void drawAll(element array[], button topBar[], char sort[], int i, int ii, bottom *bottom, side side, algorithm algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     //draws everything
     int c;
+    int fntSize = DIVIDER;
 
     //index rectangle
     Rectangle iiRect;
+
     iiRect.x = array[ii].Rect.x;
     iiRect.y = array[ii].Rect.y;
     iiRect.height = array[ii].Rect.height;
     iiRect.width = array[ii].Rect.width;
 
-    for (c = 0; c < (int)(SCREEN_WIDTH/DEVIDER); c++){
+    for (c = 0; c < (int)(SCREEN_WIDTH/DIVIDER); c++){
         array[c].color = WHITE;
     }
 
@@ -1030,9 +1032,9 @@ void setBottom(element array[], bottom *bottom, int SCREEN_WIDTH, int SCREEN_HEI
     bottom->Texture = LoadTextureFromImage(bottom->Image);
 
     bottom->Rect.x = array[0].bottomRect.x;
-    bottom->Rect.y = SCREEN_HEIGHT-(DEVIDER*2);
-    bottom->Rect.height = DEVIDER;
-    bottom->Rect.width = DEVIDER;
+    bottom->Rect.y = SCREEN_HEIGHT-(DIVIDER*2);
+    bottom->Rect.height = DIVIDER;
+    bottom->Rect.width = DIVIDER;
 
     UnloadImage(bottom->Image);
 }
@@ -1127,8 +1129,8 @@ void manageAnimation(side *side, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     side->mouse.y = GetMouseY()-2.5;
 
     if (CheckCollisionRecs(side->mouse, hitBox) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-        if (side->blackRect.x > (float)SCREEN_WIDTH/2) side->blackRect.x -= DEVIDER*2;
-    }else if (side->blackRect.x < SCREEN_WIDTH) side->blackRect.x += DEVIDER*2;
+        if (side->blackRect.x > (float)SCREEN_WIDTH/2) side->blackRect.x -= DIVIDER*2;
+    }else if (side->blackRect.x < SCREEN_WIDTH) side->blackRect.x += DIVIDER*2;
 
     if (side->blackRect.x+side->blackRect.width < SCREEN_WIDTH) side->blackRect.x = SCREEN_WIDTH-side->blackRect.width;
 
@@ -1144,7 +1146,7 @@ void drawSide(side side){
 int getMax(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int max = array[0].value, i;
 
-    for (i = 1; i < (int)(SCREEN_WIDTH/DEVIDER); i++)
+    for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER); i++)
         if (array[i].value > max)
             max = array[i].value;
     
