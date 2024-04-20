@@ -1,7 +1,8 @@
-//this constant is still a constant, every time it gets called it executes the operations its got in it
+#include <raylib.h>
 
-#define STDFPS (int)(600/DEVIDER)
+#define STDFPS (int)(600/DIVIDER)
 #define ALGS 12
 #define MAXTOP 4
-#define SPEED (float)(2)
+#define SPEED 2.00
 #define RECT_DIM 1
+#define DeltaTime GetFrameTime()*500

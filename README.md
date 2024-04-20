@@ -33,10 +33,9 @@ You can move your cursort to the top bar of the program to choose between a paus
 space, left arrow and right arrow keys
 
 Licence:
-Do whatever
+GNU GPL
 
 original author: FbLolly
 
 Hope you enjoy the program!
 //------------------------------------------//
--

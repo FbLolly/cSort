@@ -8,8 +8,8 @@
 #include "headers/const.h"
 #include "headers/structf.h"
 
-//global variable (its needed in the whole code)
-int DIVIDER = 2;
+int DIVIDER = 20;
+Font font;
 
 int main(){
     //menu choice
@@ -32,6 +32,8 @@ int main(){
     //set the fps as the standard fps and set the standard topbar
     SetTargetFPS(STDFPS);
     setTopBar(topBar);
+
+    font = LoadFont("fonts/JetBrainsMono-Bold.ttf");
 
     //SE
     while(!WindowShouldClose() && choice != 8){
@@ -87,8 +89,8 @@ int main(){
         SetTargetFPS(STDFPS);
     }
 
+    UnloadFont(font);
     return 0;
-
 }
 
 //
@@ -97,9 +99,11 @@ void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     //this function just randomizes the array and sets its color
     int i;
     for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
-        array[i].value = 5+(rand()%((int)(SCREEN_HEIGHT/DIVIDER) * 4/5));
-        array[i].value += 1;
+        array[i].value = 6+(rand()%((int)(SCREEN_HEIGHT/DIVIDER) * 4/5));
         array[i].color = WHITE;
+    
+        if (array[i].value < 1)
+            array[i].value = 6;   
     }
 }
 
@@ -139,7 +143,7 @@ void swap(int* n1, int* n2){
     *n2 = num;
 }
 
-void setMenuRects(menuRect rects[], int SCREEN_WIDTH){
+void setMenuRects(menuRect rects[], int SCREEN_WIDTH, menuImages *images){
     //SE
     int i;
 
@@ -177,21 +181,48 @@ void setMenuRects(menuRect rects[], int SCREEN_WIDTH){
     rects[11].color = DARKGRAY;
 
     for (i = 0; i < ALGS; i++){
-        rects[i].Image = LoadImage("images/button.png");
-        rects[i].Texture = LoadTextureFromImage(rects[i].Image);
-        UnloadImage(rects[i].Image);
+        rects[i].texture = images->normalTexture;
     }
+
+    //set text position
+
+    /**/
+
+    rects[0].TextPosition = (Vector2) { rects[0].Rect.x + 30 + 20, rects[0].Rect.y + 2};
+    rects[1].TextPosition = (Vector2) { rects[1].Rect.x + 70 + 20, rects[1].Rect.y + 2};
+    rects[2].TextPosition = (Vector2) { rects[2].Rect.x + 70 + 20, rects[2].Rect.y + 2};
+    rects[3].TextPosition = (Vector2) { rects[3].Rect.x + 80 + 20, rects[3].Rect.y + 2};
+    rects[4].TextPosition = (Vector2) { rects[4].Rect.x + 35 + 20, rects[4].Rect.y + 2};
+    rects[5].TextPosition = (Vector2) { rects[5].Rect.x + 55 + 20, rects[5].Rect.y + 2};
+    rects[6].TextPosition = (Vector2) { rects[6].Rect.x + 100 + 20, rects[6].Rect.y + 2};
+    rects[7].TextPosition = (Vector2) { rects[7].Rect.x + 130 + 20, rects[7].Rect.y + 2};
+    rects[8].TextPosition = (Vector2) { rects[8].Rect.x + 50 + 20, rects[8].Rect.y + 2};
+    rects[9].TextPosition = (Vector2) { rects[9].Rect.x + 80 + 20, rects[9].Rect.y + 2};
+    rects[10].TextPosition = (Vector2) { rects[10].Rect.x + 95 + 20, rects[10].Rect.y + 2};
+    rects[11].TextPosition = (Vector2) { rects[11].Rect.x + 95 + 20, rects[11].Rect.y + 2};
+
+    /**/
 }
 
 int menu(int* SCREEN_WIDTH, int* SCREEN_HEIGHT){
     int choice = -1, i; //choice has by default an impossible value
     menuRect menuRects[ALGS];
     Rectangle mouse;
+    menuImages images;
 
-    //load menu font
-    Font font = LoadFont("fonts/CaskaydiaCoveNerdFontMono-Bold.ttf");
+    /**/
 
-    setMenuRects(menuRects, *SCREEN_WIDTH);
+    images.clickedImage = LoadImage("images/clickedButton.png");
+    images.clickedTexture = LoadTextureFromImage(images.clickedImage);
+    UnloadImage(images.clickedImage);
+
+    images.normalImage = LoadImage("images/button.png");
+    images.normalTexture = LoadTextureFromImage(images.normalImage);
+    UnloadImage(images.normalImage);
+
+    /**/
+
+    setMenuRects(menuRects, *SCREEN_WIDTH, &images);
 
     mouse.height = 5;
     mouse.width = 5;
@@ -201,46 +232,57 @@ int menu(int* SCREEN_WIDTH, int* SCREEN_HEIGHT){
         mouse.x = GetMouseX()-2.5;
         mouse.y = GetMouseY()-2.5;
 
-        menuCollisions(menuRects, mouse, &choice);
+        menuCollisions(menuRects, mouse, &choice, &images);
         catchFullScreen(SCREEN_WIDTH, SCREEN_HEIGHT);
 
         //draw menu
         BeginDrawing();
-            for (i = 0; i < ALGS; i++)
-                DrawTexture(menuRects[i].Texture, menuRects[i].Rect.x, menuRects[i].Rect.y, WHITE);
-            
-            
-            DrawTextEx(font,"selectionSort", (Vector2) { menuRects[0].Rect.x + 30 + 20, menuRects[0].Rect.y + 2.}, menuRects[0].Rect.height-5, 0, menuRects[0].color);
-            DrawTextEx(font,"shakerSort", (Vector2) { menuRects[1].Rect.x + 70 + 20, menuRects[1].Rect.y + 2.}, menuRects[1].Rect.height-5, 0, menuRects[1].color);
-            DrawTextEx(font,"bubbleSort", (Vector2) { menuRects[2].Rect.x + 70 + 20, menuRects[2].Rect.y + 2.}, menuRects[2].Rect.height-5, 0, menuRects[2].color);
-            DrawTextEx(font,"gnomeSort", (Vector2) { menuRects[3].Rect.x + 80 + 20, menuRects[3].Rect.y + 2.}, menuRects[3].Rect.height-5, 0, menuRects[3].color);
-            DrawTextEx(font,"insertionSort", (Vector2) { menuRects[4].Rect.x + 35 + 20, menuRects[4].Rect.y + 2.}, menuRects[4].Rect.height-5, 0, menuRects[4].color);
-            DrawTextEx(font,"oddEvenSort", (Vector2) { menuRects[5].Rect.x + 55 + 20, menuRects[5].Rect.y + 2.}, menuRects[5].Rect.height-5, 0, menuRects[5].color);
-            DrawTextEx(font,"BadSort", (Vector2) { menuRects[6].Rect.x + 100 + 20, menuRects[6].Rect.y + 2.}, menuRects[6].Rect.height-5, 0, menuRects[6].color);
-            DrawTextEx(font,"Quit", (Vector2) { menuRects[7].Rect.x + 130 + 20, menuRects[7].Rect.y + 2.}, menuRects[7].Rect.height-5, 0, menuRects[7].color);
-            DrawTextEx(font,"countingSort", (Vector2) { menuRects[8].Rect.x + 50 + 20, menuRects[8].Rect.y + 2.}, menuRects[8].Rect.height-5, 0, menuRects[8].color);
-            DrawTextEx(font,"shellSort", (Vector2) { menuRects[9].Rect.x + 80 + 20, menuRects[9].Rect.y + 2.}, menuRects[9].Rect.height-5, 0, menuRects[9].color);
-            DrawTextEx(font,"combSort", (Vector2) { menuRects[10].Rect.x + 95 + 20, menuRects[10].Rect.y + 2.}, menuRects[10].Rect.height-5, 0, menuRects[10].color);
-            DrawTextEx(font,"Settings", (Vector2) { menuRects[11].Rect.x + 95 + 20, menuRects[11].Rect.y + 2.}, menuRects[11].Rect.height-5, 0, menuRects[11].color);
+            ClearBackground(LIGHTGRAY);
 
-            ClearBackground(BLACK);
+            for (i = 0; i < ALGS; i++)
+                DrawTexture(menuRects[i].texture, menuRects[i].Rect.x, menuRects[i].Rect.y, WHITE);
+            
+            
+            DrawTextEx(font,"selectionSort", menuRects[0].TextPosition,menuRects[0].Rect.height-5, 3, menuRects[0].color);
+            DrawTextEx(font,"shakerSort", menuRects[1].TextPosition,menuRects[1].Rect.height-5, 3, menuRects[1].color);
+            DrawTextEx(font,"bubbleSort", menuRects[2].TextPosition,menuRects[2].Rect.height-5, 3, menuRects[2].color);
+            DrawTextEx(font,"gnomeSort", menuRects[3].TextPosition,menuRects[3].Rect.height-5, 3, menuRects[3].color);
+            DrawTextEx(font,"insertionSort", menuRects[4].TextPosition,menuRects[4].Rect.height-5, 3, menuRects[4].color);
+            DrawTextEx(font,"oddEvenSort", menuRects[5].TextPosition,menuRects[5].Rect.height-5, 3, menuRects[5].color);
+            DrawTextEx(font,"BadSort", menuRects[6].TextPosition,menuRects[6].Rect.height-5, 3, menuRects[6].color);
+            DrawTextEx(font,"Quit", menuRects[7].TextPosition,menuRects[7].Rect.height-5, 3, menuRects[7].color);
+            DrawTextEx(font,"countingSort", menuRects[8].TextPosition,menuRects[8].Rect.height-5, 3, menuRects[8].color);
+            DrawTextEx(font,"shellSort", menuRects[9].TextPosition,menuRects[9].Rect.height-5, 3, menuRects[9].color);
+            DrawTextEx(font,"combSort", menuRects[10].TextPosition,menuRects[10].Rect.height-5, 3, menuRects[10].color);
+            DrawTextEx(font,"Settings", menuRects[11].TextPosition,menuRects[11].Rect.height-5, 3, menuRects[11].color);
+
         EndDrawing();
     }
 
+    unloadmenu(menuRects, &images);
     return choice;
 }
 
-void menuCollisions(menuRect rects[], Rectangle mouse, int *choice){
+void menuCollisions(menuRect rects[], Rectangle mouse, int *choice, menuImages *images){
     //checks if you clicked on one of the buttons
 
     int i;
 
     for (i = 0; i < ALGS; i++){
         if (CheckCollisionRecs(rects[i].Rect, mouse)){
-            rects[i].color = BLUE;
+            rects[i].color = BLACK;
 
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                rects[i].texture = images->clickedTexture;
+
+                rects[i].TextPosition.x += 4;
+                rects[i].TextPosition.y += 4;
+            }else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
                 *choice = i+1;
+                rects[i].texture = images->normalTexture;
+
+                rects[i].TextPosition.x -= 4;
+                rects[i].TextPosition.y -= 4;
             }
 
         }else{
@@ -386,7 +428,7 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
 
         isSorted = true;
 
-        for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER)-1 && !WindowShouldClose(); i = i){
+        for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[i].value > array[i+1].value){
@@ -405,7 +447,7 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
                 return;
         }
 
-        for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose(); i = i){
+        for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER)-1 && !WindowShouldClose();){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[i].value > array[i+1].value){
@@ -774,13 +816,9 @@ void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_W
 //---------------------------
 
 void settings(){
-    //the settings change the global variable DIVIDER using a slider
-
     int i = 0;
     bool stop = false;
 
-    //load the font
-    Font font = LoadFont("fonts/CaskaydiaCoveNerdFontMono-Bold.ttf");
     slider DIVIDER_slider;
     Rectangle mouse;
 
@@ -812,10 +850,11 @@ void settings(){
         if (IsKeyPressed(KEY_ENTER)) stop = true;
 
         BeginDrawing();
+            ClearBackground(LIGHTGRAY);
+            
             DrawTexture(DIVIDER_slider.Texture, DIVIDER_slider.Rect.x, DIVIDER_slider.Rect.y, WHITE);
-            DrawTextEx(font, TextFormat("DIVIDER (2 - 40): %d",DIVIDER), (Vector2) {10+500+20, 10}, 25, 0, LIGHTGRAY);
+            DrawTextEx(font, TextFormat("DIVIDER (2 - 40): %d (ENTER to save and exit)",DIVIDER), (Vector2) {10+500+20, 10}, 25, 0, BLACK);
             DrawRectangle(DIVIDER_slider.slider.x, DIVIDER_slider.slider.y, DIVIDER_slider.slider.width, DIVIDER_slider.slider.height, BLACK);
-            ClearBackground(DARKGRAY);
         EndDrawing();
     }
 
@@ -926,7 +965,7 @@ void drawTopBar(button array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     DrawRectangle(0, 0, SCREEN_WIDTH, 5+5+40, LIGHTGRAY);
 
     for (i = 0; i < MAXTOP; i++)
-        DrawTexture(array[i].Texture, array[i].Rect.x, array[i].Rect.y, WHITE);
+        DrawTexture(array[i].texture, array[i].Rect.x, array[i].Rect.y, WHITE);
 }
 
 void topBarInteraction(button array[], bool *playing){
@@ -963,22 +1002,22 @@ void setTopBar(button array[]){
     array[0].Rect.y = 5;
     array[0].Rect.width = 40;
     array[0].Rect.height = 40;
-    array[0].Image = LoadImage("images/play.png");
-    array[0].Texture = LoadTextureFromImage(array[0].Image);
+    array[0].image = LoadImage("images/play.png");
+    array[0].texture = LoadTextureFromImage(array[0].image);
 
     array[1].Rect.x = (40*10)+(40*2);
     array[1].Rect.y = 0;
     array[1].Rect.width = 40;
     array[1].Rect.height = 40;
-    array[1].Image = LoadImage("images/before.png");
-    array[1].Texture = LoadTextureFromImage(array[1].Image);
+    array[1].image = LoadImage("images/before.png");
+    array[1].texture = LoadTextureFromImage(array[1].image);
 
     array[2].Rect.x = (40*10)+(40*4);
     array[2].Rect.y = 0;
     array[2].Rect.width = 40;
     array[2].Rect.height = 40;
-    array[2].Image = LoadImage("images/next.png");
-    array[2].Texture = LoadTextureFromImage(array[2].Image);
+    array[2].image = LoadImage("images/next.png");
+    array[2].texture = LoadTextureFromImage(array[2].image);
 }
 
 //*/
@@ -1116,7 +1155,7 @@ void setSideAnimation(side *side, char type, int SCREEN_WIDTH, int SCREEN_HEIGHT
     UnloadImage(side->Image);
 }
 
-void manageAnimation(side *side, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+void manageAnimation(side *side, element *array, bool *playing, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     //manages the side screen during sorting
 
     Rectangle hitBox;
@@ -1174,17 +1213,28 @@ void drawBox(algorithm algorithm){
 //--
 
 
-extern void betterSortingCode(element array[], button* topBar, bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT, int i, int ii, bottom bottom, side* side, int* fps, algorithm *algorithm, char string[]){
+void betterSortingCode(element array[], button* topBar, bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT, int i, int ii, bottom bottom, side* side, int* fps, algorithm *algorithm, char string[]){
 
     topBarInteraction(topBar, playing);
     catchPlaying(playing, fps, topBar);
-    manageAnimation(side, SCREEN_WIDTH, SCREEN_HEIGHT);
+    manageAnimation(side, array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     drawAll(array, topBar, string, ii, ii, &bottom, *side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-extern void sortingInit(int SCREEN_WIDTH, int SCREEN_HEIGHT, element array[], char type, bottom *bottom, side *side){
+void sortingInit(int SCREEN_WIDTH, int SCREEN_HEIGHT, element array[], char type, bottom *bottom, side *side){
     setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
     setBottom(array, bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
     setSideAnimation(side, type, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
+void unloadmenu(menuRect rects[], menuImages *images){
+    int i;
+
+    for (i = 0; i < ALGS; i++){
+        UnloadTexture(rects[i].texture);
+    }
+
+    UnloadTexture(images->clickedTexture);
+    UnloadTexture(images->normalTexture);
 }

@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <time.h>
 #include "raylib.h"
 
@@ -11,10 +10,16 @@ typedef struct{
 }element;
 
 typedef struct{
-    bool active;
-    Texture Texture;
+    Texture texture;
+    Image image;
     Rectangle Rect;
-    Image Image;
+    bool active;
+
+    Image clickedImage;
+    Image normalImage;
+
+    Texture clickedTexture;
+    Texture normalTexture;
 }button;
 
 typedef struct{
@@ -44,32 +49,34 @@ typedef struct{
     Rectangle Rect;
     int num;
     Color color;
-    Image Image;
-    Texture Texture;
+
+    Texture texture;
+    
+    Vector2 TextPosition;
 }menuRect;
 
 typedef struct{
     Rectangle Rect;
-    Image Image;
     Texture Texture;
+    Image Image;
     Rectangle slider;
 }slider;
 
 typedef struct{
-    Rectangle Rect;
-    int R, G, B;
-    Rectangle slider;
-    Color Color;
-    char strcolor[20];
-}colorSlider;
+    Image clickedImage;
+    Texture clickedTexture;
+
+    Image normalImage;
+    Texture normalTexture;
+}menuImages;
 
 int menu(int *SCREEN_WIDTH, int*SCREEN_HEIGHT);
-extern void setMenuRects(menuRect rects[], int SCREEN_WIDTH);
+extern void setMenuRects(menuRect rects[], int SCREEN_WIDTH, menuImages *images);
 extern void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void drawArray(element array[], Rectangle iiRect, int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void swap(int *n1, int *n2);
 extern void intToString(char *string, int num);
-extern void menuCollisions(menuRect rects[], Rectangle mouse, int *choice);
+extern void menuCollisions(menuRect rects[], Rectangle mouse, int *choice, menuImages *images);
 
 extern void settings();
 extern void setDeviderSlider(slider *slider);
@@ -100,7 +107,7 @@ extern void drawAll(element array[], button topBar[], char sort[], int i, int ii
 extern void setBottom(element array[], bottom *bottom, int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void drawUpdateBottom(element array[], int i, int ii, bottom *bottom);
 extern void setSideAnimation(side *side, char type, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void manageAnimation(side *side, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void manageAnimation(side *side, element *array, bool *playing, int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void drawSide(side side);
 extern int nextGap(int gap);
 extern void drawBox(algorithm algorithm);
@@ -110,3 +117,9 @@ extern int partition(element array[], int l, int h);
 extern void betterSortingCode(element array[], button* topBar, bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT, int i, int ii, bottom bottom, side *side, int* fps, algorithm *algorithm, char string[]);
 extern void sortingInit(int SCREEN_WIDTH, int SCREEN_HEIGHT, element array[], char type, bottom *bottom, side *side);
 extern bool compareColor(Color color1, Color color2);
+
+extern void setTextVectors(menuRect rects[]);
+extern void unloadTopBar(button array[]);
+extern void unloadmenu(menuRect rects[], menuImages *images);
+
+extern void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_WIDTH, int SCREEN_HEIGHT, bool played);
