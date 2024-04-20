@@ -10,8 +10,6 @@ typedef struct{
 }element;
 
 typedef struct{
-    Texture texture;
-    Image image;
     Rectangle Rect;
     bool active;
 
@@ -20,6 +18,8 @@ typedef struct{
 
     Texture clickedTexture;
     Texture normalTexture;
+    
+    Texture texture;
 }button;
 
 typedef struct{
@@ -118,8 +118,5 @@ extern void betterSortingCode(element array[], button* topBar, bool* playing, in
 extern void sortingInit(int SCREEN_WIDTH, int SCREEN_HEIGHT, element array[], char type, bottom *bottom, side *side);
 extern bool compareColor(Color color1, Color color2);
 
-extern void setTextVectors(menuRect rects[]);
-extern void unloadTopBar(button array[]);
 extern void unloadmenu(menuRect rects[], menuImages *images);
-
-extern void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_WIDTH, int SCREEN_HEIGHT, bool played);
+extern void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_WIDTH, int SCREEN_HEIGHT);

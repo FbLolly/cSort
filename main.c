@@ -356,14 +356,17 @@ void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCR
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "selectionSort");
-            if (IsKeyDown(KEY_ENTER))
+            if (IsKeyDown(KEY_ENTER)){
+                
                 return;
+            }
         }
 
         swap(&array[minIdx].value, &array[i].value);
         algorithm->swaps++;
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -405,11 +408,14 @@ void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WI
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, ii, ii, bottom, &side, &fps, algorithm, "badSort");
-            if (IsKeyDown(KEY_ENTER))
+            if (IsKeyDown(KEY_ENTER)){
+                
                 return;
+            }
         }
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -443,8 +449,10 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "oddEvenSort");
-            if (IsKeyDown(KEY_ENTER))
+            if (IsKeyDown(KEY_ENTER)){
+                
                 return;
+            }
         }
 
         for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER)-1 && !WindowShouldClose();){
@@ -462,11 +470,14 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "oddEvenSort");
-            if (IsKeyDown(KEY_ENTER))
+            if (IsKeyDown(KEY_ENTER)){
+                
                 return;
+            }
         }
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -498,8 +509,10 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "cocktailShakerSort");
-            if (IsKeyDown(KEY_ENTER))
+            if (IsKeyDown(KEY_ENTER)){
+                
                 return;
+            }
         }
 
         if (!swapped) {break;}
@@ -521,13 +534,16 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "cocktailShakerSort");
-            if (IsKeyDown(KEY_ENTER))
-                return;    
+            if (IsKeyDown(KEY_ENTER)){
+                
+                return;
+            }
         }
 
         start += 1;
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -559,13 +575,16 @@ void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, ii, ii, bottom, &side, &fps, algorithm, "bubbleSort");
-            if (IsKeyDown(KEY_ENTER))
+            if (IsKeyDown(KEY_ENTER)){
+                
                 return;
+            }
         }
 
         a--;
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -596,10 +615,13 @@ void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, index, index, bottom, &side, &fps, algorithm, "gnomeSort");
-        if (IsKeyDown(KEY_ENTER))
+        if (IsKeyDown(KEY_ENTER)){
+            
             return;
+        }
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -626,12 +648,15 @@ void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCR
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "insertionSort");
-            if (IsKeyDown(KEY_ENTER))
+            if (IsKeyDown(KEY_ENTER)){
+                
                 return;
+            }
         }
 
         i += 1;
     }
+    
     
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
@@ -659,8 +684,10 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
-        if (IsKeyDown(KEY_ENTER))
+        if (IsKeyDown(KEY_ENTER)){
+            
             return;
+        }
     }
 
     for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
@@ -672,8 +699,10 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
-        if (IsKeyDown(KEY_ENTER))
+        if (IsKeyDown(KEY_ENTER)){
+            
             return;
+        }
     }
 
     for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
@@ -685,8 +714,10 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
-        if (IsKeyDown(KEY_ENTER))
+        if (IsKeyDown(KEY_ENTER)){
+            
             return;
+        }
     }
 
     for (i = 1; i <= max && !WindowShouldClose();) {
@@ -698,8 +729,10 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
-        if (IsKeyDown(KEY_ENTER))
+        if (IsKeyDown(KEY_ENTER)){
+            
             return;
+        }
     }
 
     for (i = (int)(SCREEN_WIDTH/DIVIDER)-1; i >= 0 && !WindowShouldClose();){
@@ -712,8 +745,10 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
-        if (IsKeyDown(KEY_ENTER))
+        if (IsKeyDown(KEY_ENTER)){
+            
             return;
+        }
     }
 
     for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
@@ -725,10 +760,13 @@ void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCRE
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
-        if (IsKeyDown(KEY_ENTER))
+        if (IsKeyDown(KEY_ENTER)){
+            
             return;  
+        }
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -756,8 +794,10 @@ void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
                 }
 
                 betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "shellSort");
-                if (IsKeyDown(KEY_ENTER))
+                if (IsKeyDown(KEY_ENTER)){
+                    
                     return;  
+                }
             }
 
             array[ii].value = temp;
@@ -765,6 +805,7 @@ void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
         }
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
@@ -802,18 +843,22 @@ void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_W
             result += end-begin;
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "combSort");
-            if (IsKeyDown(KEY_ENTER))
-                return;    
+            if (IsKeyDown(KEY_ENTER)){
+                
+                return;
+            }
 
             begin = clock();
         }
     }
 
+    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 
 //---------------------------
+
 
 void settings(){
     int i = 0;
@@ -981,15 +1026,23 @@ void topBarInteraction(button array[], bool *playing){
     mouse.width = 5;
 
     for (i = 0; i < MAXTOP; i++){
-        if (CheckCollisionRecs(mouse, array[i].Rect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-            if (array[i].active) array[i].active = false;
-            else array[i].active = true;
+        if (CheckCollisionRecs(mouse, array[i].Rect)){
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                array[i].texture = array[i].clickedTexture;
+            }else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+                array[i].texture = array[i].normalTexture;
 
-            if (i == 0) {
-                if (!*playing)
-                    *playing = true;
+                if (array[i].active) 
+                    array[i].active = false;
                 else
-                    *playing = false;
+                    array[i].active = true;
+
+                if (i == 0) {
+                    if (!*playing)
+                        *playing = true;
+                    else
+                        *playing = false;
+                }
             }
         }
     }
@@ -1002,22 +1055,50 @@ void setTopBar(button array[]){
     array[0].Rect.y = 5;
     array[0].Rect.width = 40;
     array[0].Rect.height = 40;
-    array[0].image = LoadImage("images/play.png");
-    array[0].texture = LoadTextureFromImage(array[0].image);
+
+    array[0].clickedImage = LoadImage("images/clickedPlay.png");
+    array[0].clickedTexture = LoadTextureFromImage(array[0].clickedImage);
+    UnloadImage(array[0].clickedImage);
+
+    array[0].normalImage = LoadImage("images/play.png");
+    array[0].normalTexture = LoadTextureFromImage(array[0].normalImage);
+    UnloadImage(array[0].normalImage);
+
+    array[0].texture = array[0].normalTexture;
+
+    /*---*/
 
     array[1].Rect.x = (40*10)+(40*2);
     array[1].Rect.y = 0;
     array[1].Rect.width = 40;
     array[1].Rect.height = 40;
-    array[1].image = LoadImage("images/before.png");
-    array[1].texture = LoadTextureFromImage(array[1].image);
+
+    array[1].clickedImage = LoadImage("images/clickedBefore.png");
+    array[1].clickedTexture = LoadTextureFromImage(array[1].clickedImage);
+    UnloadImage(array[1].clickedImage);
+
+    array[1].normalImage = LoadImage("images/before.png");
+    array[1].normalTexture = LoadTextureFromImage(array[1].normalImage);
+    UnloadImage(array[1].normalImage);
+
+    array[1].texture = array[1].normalTexture;
+
+    /*---*/
 
     array[2].Rect.x = (40*10)+(40*4);
     array[2].Rect.y = 0;
     array[2].Rect.width = 40;
     array[2].Rect.height = 40;
-    array[2].image = LoadImage("images/next.png");
-    array[2].texture = LoadTextureFromImage(array[2].image);
+
+    array[2].clickedImage = LoadImage("images/clickedNext.png");
+    array[2].clickedTexture = LoadTextureFromImage(array[2].clickedImage);
+    UnloadImage(array[2].clickedImage);
+
+    array[2].normalImage = LoadImage("images/next.png");
+    array[2].normalTexture = LoadTextureFromImage(array[2].normalImage);
+    UnloadImage(array[2].normalImage);
+
+    array[2].texture = array[2].normalTexture;
 }
 
 //*/
@@ -1060,7 +1141,7 @@ void drawAll(element array[], button topBar[], char sort[], int i, int ii, botto
         drawUpdateBottom(array, i, ii, bottom);
         drawSide(side);
 
-        DrawText(sort, 5, 5, 30, BLUE);
+        DrawTextEx(font, sort, (Vector2){5, 5}, 40, 3, DARKGRAY);
     EndDrawing();
 }
 
@@ -1159,6 +1240,8 @@ void manageAnimation(side *side, element *array, bool *playing, int SCREEN_WIDTH
     //manages the side screen during sorting
 
     Rectangle hitBox;
+    int i;
+
     hitBox.x = SCREEN_WIDTH-((float)SCREEN_WIDTH/8);
     hitBox.y = 0;
     hitBox.height = SCREEN_HEIGHT;
@@ -1173,6 +1256,11 @@ void manageAnimation(side *side, element *array, bool *playing, int SCREEN_WIDTH
 
     if (side->blackRect.x+side->blackRect.width < SCREEN_WIDTH) side->blackRect.x = SCREEN_WIDTH-side->blackRect.width;
 
+    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
+        if (CheckCollisionRecs(side->mouse, array[i].Rect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+            clickAnimation(array[i], playing, side->mouse, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+    }
 }
 
 //SE --
@@ -1237,4 +1325,37 @@ void unloadmenu(menuRect rects[], menuImages *images){
 
     UnloadTexture(images->clickedTexture);
     UnloadTexture(images->normalTexture);
+}
+
+void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+    bool was;
+    Image img;
+    Texture txt;
+
+    img = LoadImage("images/big.png");
+    txt = LoadTextureFromImage(img);
+    UnloadImage(img);
+
+    if (*playing)
+        was = true;
+    else
+        was = false;
+
+    *playing = false;
+
+    while (!WindowShouldClose()){
+
+        BeginDrawing();
+            ClearBackground(LIGHTGRAY);
+
+            DrawTexture(txt, (SCREEN_WIDTH/2)-(250), (SCREEN_HEIGHT/2)-(250), WHITE);
+        DrawTextEx(font, TextFormat("value: %d (ESC to exit)", clicked.value-5), (Vector2){((float)SCREEN_WIDTH/2)-210, (((float)SCREEN_HEIGHT/2))-20}, 40, 1, BLACK);
+        EndDrawing();
+
+    }
+
+    if (was)
+        *playing = true;
+
+    UnloadTexture(txt);
 }

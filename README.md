@@ -32,8 +32,7 @@ rewind the algorithm, you can also press the left and right arrow keys to make t
 You can move your cursort to the top bar of the program to choose between a pause and rewind button, a left arrow button and a right arrow one which have respectively the same functions as the
 space, left arrow and right arrow keys
 
-Licence:
-GNU GPL
+Licence: do whatever :>
 
 original author: FbLolly
 
