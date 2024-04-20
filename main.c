@@ -1349,7 +1349,7 @@ void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_
             ClearBackground(LIGHTGRAY);
 
             DrawTexture(txt, (SCREEN_WIDTH/2)-(250), (SCREEN_HEIGHT/2)-(250), WHITE);
-        DrawTextEx(font, TextFormat("value: %d (ESC to exit)", clicked.value-5), (Vector2){((float)SCREEN_WIDTH/2)-210, (((float)SCREEN_HEIGHT/2))-20}, 40, 1, BLACK);
+            DrawTextEx(font, TextFormat("value: %d (ESC to exit)", clicked.value-5), (Vector2){((float)SCREEN_WIDTH/2), (((float)SCREEN_HEIGHT/2))}, 30, 1, BLACK);
         EndDrawing();
 
     }
