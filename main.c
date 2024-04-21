@@ -1329,6 +1329,8 @@ void unloadmenu(menuRect rects[], menuImages *images){
 
 void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     bool was;
+    bool animation = true;
+    int pos = SCREEN_HEIGHT;
     Image img;
     Texture txt;
 
@@ -1348,10 +1350,13 @@ void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_
         BeginDrawing();
             ClearBackground(LIGHTGRAY);
 
-            DrawTexture(txt, (SCREEN_WIDTH/2)-(250), (SCREEN_HEIGHT/2)-(250), WHITE);
-            DrawTextEx(font, TextFormat("value: %d (ESC to exit)", clicked.value-5), (Vector2){((float)SCREEN_WIDTH/2)-220, (((float)SCREEN_HEIGHT/2)-20)}, 40, 1, BLACK);
+            DrawTexture(txt, (SCREEN_WIDTH/2)-(250), pos, WHITE);
+            DrawTextEx(font, TextFormat("value: %d (ESC to exit)", clicked.value-5), (Vector2){((float)SCREEN_WIDTH/2)-220, pos+250-20}, 40, 1, BLACK);
         EndDrawing();
 
+        if (pos > ((SCREEN_HEIGHT/2)-250) && animation){
+            pos -= 40;
+        }
     }
 
     if (was)
