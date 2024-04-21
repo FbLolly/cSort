@@ -14,6 +14,7 @@ Font font;
 int main(){
     //menu choice
     int choice;
+    int counter = 0;
 
     //these could have been global variables too but I decided to make them normal ones
     int SCREEN_WIDTH = 1920;
@@ -37,6 +38,12 @@ int main(){
 
     //SE
     while(!WindowShouldClose() && choice != 8){
+        ToggleFullscreen();
+
+        if (counter > 0)
+            ToggleFullscreen();
+
+
         //see menu function
         choice = menu(&SCREEN_WIDTH, &SCREEN_HEIGHT);
 
@@ -46,6 +53,9 @@ int main(){
         algorithm.swaps = 0;
         algorithm.writesMain = 0;
         algorithm.writesSecond = 0;
+
+        if (counter <= 1)
+            counter += 1;
 
         //switch on the menu choice
         switch (choice) {
@@ -90,6 +100,7 @@ int main(){
     }
 
     UnloadFont(font);
+
     return 0;
 }
 
