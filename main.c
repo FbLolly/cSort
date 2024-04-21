@@ -1,5 +1,3 @@
-//SE = self explanatory
-
 #include <stdlib.h>
 #include <time.h>
 
