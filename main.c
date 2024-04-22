@@ -1060,10 +1060,7 @@ void topBarInteraction(button array[], bool *playing){
 void setTopBar(button array[]){
     //SE
 
-    array[0].Rect.x = 40*10;
-    array[0].Rect.y = 5;
-    array[0].Rect.width = 40;
-    array[0].Rect.height = 40;
+    array[0].Rect = (Rectangle){400, 5, 40, 40};
 
     array[0].clickedImage = LoadImage("images/clickedPlay.png");
     array[0].clickedTexture = LoadTextureFromImage(array[0].clickedImage);
@@ -1077,10 +1074,7 @@ void setTopBar(button array[]){
 
     /*---*/
 
-    array[1].Rect.x = (40*10)+(40*2);
-    array[1].Rect.y = 0;
-    array[1].Rect.width = 40;
-    array[1].Rect.height = 40;
+    array[1].Rect = (Rectangle){480, 0, 40, 40};
 
     array[1].clickedImage = LoadImage("images/clickedBefore.png");
     array[1].clickedTexture = LoadTextureFromImage(array[1].clickedImage);
@@ -1094,10 +1088,7 @@ void setTopBar(button array[]){
 
     /*---*/
 
-    array[2].Rect.x = (40*10)+(40*4);
-    array[2].Rect.y = 0;
-    array[2].Rect.width = 40;
-    array[2].Rect.height = 40;
+    array[2].Rect = (Rectangle){560, 0, 40, 40};
 
     array[2].clickedImage = LoadImage("images/clickedNext.png");
     array[2].clickedTexture = LoadTextureFromImage(array[2].clickedImage);
@@ -1108,6 +1099,20 @@ void setTopBar(button array[]){
     UnloadImage(array[2].normalImage);
 
     array[2].texture = array[2].normalTexture;
+
+    /*---*/
+
+    array[3].Rect = (Rectangle){800, 5, 40, 40};
+
+    array[3].clickedImage = LoadImage("images/clickedMenu.png");
+    array[3].clickedTexture = LoadTextureFromImage(array[3].clickedImage);
+    UnloadImage(array[3].clickedImage);
+
+    array[3].normalImage = LoadImage("images/menu.png");
+    array[3].normalTexture = LoadTextureFromImage(array[3].normalImage);
+    UnloadImage(array[3].normalImage);
+
+    array[3].texture = array[3].normalTexture;
 }
 
 //*/
@@ -1245,21 +1250,15 @@ void setSideAnimation(side *side, char type, int SCREEN_WIDTH, int SCREEN_HEIGHT
     UnloadImage(side->Image);
 }
 
-void manageAnimation(side *side, element *array, bool *playing, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+void manageAnimation(side *side, element *array, button button, bool *playing, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     //manages the side screen during sorting
 
-    Rectangle hitBox;
     int i;
-
-    hitBox.x = SCREEN_WIDTH-((float)SCREEN_WIDTH/8);
-    hitBox.y = 0;
-    hitBox.height = SCREEN_HEIGHT;
-    hitBox.width = (float)SCREEN_WIDTH/8;
 
     side->mouse.x = GetMouseX()-2.5;
     side->mouse.y = GetMouseY()-2.5;
 
-    if (CheckCollisionRecs(side->mouse, hitBox) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
+    if (CheckCollisionRecs(side->mouse, button.Rect) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
         if (side->blackRect.x > (float)SCREEN_WIDTH/2)
             side->blackRect.x -= DIVIDER*100*GetFrameTime();
 
@@ -1318,7 +1317,7 @@ void betterSortingCode(element array[], button* topBar, bool* playing, int SCREE
 
     topBarInteraction(topBar, playing);
     catchPlaying(playing, fps, topBar);
-    manageAnimation(side, array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
+    manageAnimation(side, array, topBar[3], playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     drawAll(array, topBar, string, ii, ii, &bottom, *side, *algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
 }

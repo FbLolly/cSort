@@ -107,7 +107,7 @@ extern void drawAll(element array[], button topBar[], char sort[], int i, int ii
 extern void setBottom(element array[], bottom *bottom, int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void drawUpdateBottom(element array[], int i, int ii, bottom *bottom);
 extern void setSideAnimation(side *side, char type, int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void manageAnimation(side *side, element *array, bool *playing, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void manageAnimation(side *side, element *array, button button, bool *playing, int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void drawSide(side side);
 extern int nextGap(int gap);
 extern void drawBox(algorithm algorithm);
