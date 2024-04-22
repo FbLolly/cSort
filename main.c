@@ -1260,10 +1260,14 @@ void manageAnimation(side *side, element *array, bool *playing, int SCREEN_WIDTH
     side->mouse.y = GetMouseY()-2.5;
 
     if (CheckCollisionRecs(side->mouse, hitBox) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-        if (side->blackRect.x > (float)SCREEN_WIDTH/2) side->blackRect.x -= DIVIDER*2;
-    }else if (side->blackRect.x < SCREEN_WIDTH) side->blackRect.x += DIVIDER*2;
+        if (side->blackRect.x > (float)SCREEN_WIDTH/2)
+            side->blackRect.x -= DIVIDER*100*GetFrameTime();
 
-    if (side->blackRect.x+side->blackRect.width < SCREEN_WIDTH) side->blackRect.x = SCREEN_WIDTH-side->blackRect.width;
+    }else if (side->blackRect.x < SCREEN_WIDTH)
+        side->blackRect.x += DIVIDER*100*GetFrameTime();
+
+    if (side->blackRect.x+side->blackRect.width < SCREEN_WIDTH)
+        side->blackRect.x = SCREEN_WIDTH-side->blackRect.width;
 
     for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
         if (CheckCollisionRecs(side->mouse, array[i].Rect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
@@ -1339,6 +1343,7 @@ void unloadmenu(menuRect rects[], menuImages *images){
 void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     bool was;
     bool animation = true;
+
     int pos = SCREEN_HEIGHT;
     Image img;
     Texture txt;
@@ -1364,7 +1369,7 @@ void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_
         EndDrawing();
 
         if (pos > ((SCREEN_HEIGHT/2)-250) && animation){
-            pos -= 40;
+            pos -= (40 * GetFrameTime() * 50);
         }
     }
 
