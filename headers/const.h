@@ -6,3 +6,4 @@
 #define SPEED 2.00
 #define RECT_DIM 1
 #define DeltaTime GetFrameTime()*500
+#define dim (int)((float)SCREEN_WIDTH/DIVIDER) 

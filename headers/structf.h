@@ -73,7 +73,7 @@ typedef struct{
 int menu(int *SCREEN_WIDTH, int*SCREEN_HEIGHT);
 extern void setMenuRects(menuRect rects[], int SCREEN_WIDTH, menuImages *images);
 extern void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT);
-extern void drawArray(element array[], Rectangle iiRect, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void drawArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT);
 extern void swap(int *n1, int *n2);
 extern void intToString(char *string, int num);
 extern void menuCollisions(menuRect rects[], Rectangle mouse, int *choice, menuImages *images);
@@ -84,16 +84,16 @@ extern void manageDeviderSlider(slider *slider);
 extern int getX(Color color);
 extern bool sameColors(Color color1, Color color2);
 
-extern void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
-extern void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int);
+extern void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
+extern void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT);
 
 extern void catchPlaying(bool* playing, int* fps, button array[]);
 extern void through(element array[], bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT);

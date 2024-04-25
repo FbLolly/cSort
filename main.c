@@ -3,16 +3,15 @@
 
 #include "raylib.h"
 
-#include "headers/const.h"
-#include "headers/structf.h"
-
 int DIVIDER = 20;
 Font font;
 
+#include "headers/const.h"
+#include "headers/structf.h"
+
 int main(){
     //menu choice
-    int choice;
-    int counter = 0;
+    int choice = -1;
 
     //these could have been global variables too but I decided to make them normal ones
     int SCREEN_WIDTH = 1920;
@@ -27,6 +26,7 @@ int main(){
     //set srand seed and init raylib window
     srand(time(NULL));
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "cSort");
+    ToggleFullscreen();
 
     //set the fps as the standard fps and set the standard topbar
     SetTargetFPS(STDFPS);
@@ -36,11 +36,6 @@ int main(){
 
     //SE
     while(!WindowShouldClose() && choice != 8){
-        ToggleFullscreen();
-
-        if (counter > 0)
-            ToggleFullscreen();
-
 
         //see menu function
         choice = menu(&SCREEN_WIDTH, &SCREEN_HEIGHT);
@@ -52,41 +47,38 @@ int main(){
         algorithm.writesMain = 0;
         algorithm.writesSecond = 0;
 
-        if (counter <= 1)
-            counter += 1;
-
         //switch on the menu choice
         switch (choice) {
             case 1:
-                selectionSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                selectionSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 2:
-                shakerSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                shakerSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 3:
-                bubbleSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                bubbleSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 4:
-                gnomeSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                gnomeSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 5:
-                insertionSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                insertionSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 6:
-                oddEvenSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                oddEvenSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 7:
-                badSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                badSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             //8 = quit
             case 9:
-                countingSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                countingSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 10:
-                shellSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                shellSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 11:
-                combSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT, (int)(SCREEN_WIDTH/DIVIDER));
+                combSort(&playing, topBar, &algorithm, SCREEN_WIDTH, SCREEN_HEIGHT);
             break;
             case 12:
                 settings();
@@ -107,7 +99,7 @@ int main(){
 void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     //this function just randomizes the array and sets its color
     int i;
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
+    for (i = 0; i < dim; i++){
         array[i].value = 6+(rand()%((int)(SCREEN_HEIGHT/DIVIDER) * 4/5));
         array[i].color = WHITE;
     
@@ -116,26 +108,19 @@ void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     }
 }
 
-void drawArray(element array[], Rectangle iiRect, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+void drawArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int i;
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
-        array[i].Rect.x = i*(DIVIDER);
-        array[i].Rect.y = (SCREEN_HEIGHT-(array[i].value*(DIVIDER)))+(DIVIDER*2);
-        array[i].Rect.width = DIVIDER;
-        array[i].Rect.height = array[i].value*DIVIDER;
+    for (i = 0; i < dim; i++){
+        array[i].Rect = (Rectangle){i*DIVIDER, (SCREEN_HEIGHT-(array[i].value*DIVIDER))+(DIVIDER*2), DIVIDER, array[i].value*DIVIDER};
 
         //draw the array
-        DrawRectangleRec(iiRect, BLUE);
         DrawRectangleRec(array[i].Rect, array[i].color);
         DrawRectangle(0, SCREEN_HEIGHT-(DIVIDER*3), SCREEN_WIDTH, DIVIDER*3, BLACK);
     }
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
-        array[i].bottomRect.x = DIVIDER*i;
-        array[i].bottomRect.y = SCREEN_HEIGHT-(DIVIDER*3);
-        array[i].bottomRect.height = DIVIDER;
-        array[i].bottomRect.width = DIVIDER;
+    for (i = 0; i < dim; i++){
+        array[i].bottomRect = (Rectangle){DIVIDER*i, SCREEN_HEIGHT-(DIVIDER*3), DIVIDER, DIVIDER};
 
         //draw the bottom part of the array
         DrawRectangleRec(array[i].bottomRect, PINK);
@@ -339,53 +324,52 @@ void catchPlaying(bool *playing, int* fps, button array[]){
 ////* sorting algs (SE)
 
 
-void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
+void selectionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int i = 0, ii = 0, minIdx = 0, fps = STDFPS;
     bool exit = false;
 
     bottom bottom;
     side side;
-    element array[DIM]; //uses a constant declared at the start of the stack (no heap used)
+    element array[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'S', &bottom, &side);
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER)-1; i++){
+    for (i = 0; i < dim-1; i++){
         algorithm->forCicles++;
         minIdx = i;
 
-        for (ii = i+1; ii < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
-
+        for (ii = i+1; ii < dim && !WindowShouldClose();){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[ii].value < array[minIdx].value)
                     minIdx = ii;
                 
                 algorithm->comparison++;
-                ii++;
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "selectionSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
+
+            if (*playing)
+                ii++;
         }
 
         swap(&array[minIdx].value, &array[i].value);
         algorithm->swaps++;
     }
-
     
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int ii = 0, a = (int)(SCREEN_WIDTH/DIVIDER), fps = STDFPS;
+void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+    int ii = 0, a = dim, fps = STDFPS;
     bool isSorted = false;
 
     bottom bottom;
     side side;
-    element array[DIM];
+    element array[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'B', &bottom, &side);
 
@@ -393,7 +377,7 @@ void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WI
         algorithm->forCicles++;
         isSorted = true;
 
-        for (ii = 0; ii < a-1 && !WindowShouldClose(); ii = ii){
+        for (ii = 0; ii < a-1 && !WindowShouldClose();){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[ii].value > array[ii+1].value){
@@ -412,15 +396,15 @@ void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WI
                     }
 
                 algorithm->comparison += 2;
-                
-                ii++;
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, ii, ii, bottom, &side, &fps, algorithm, "badSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
+
+            if (*playing)
+                ii++;
         }
     }
 
@@ -428,13 +412,13 @@ void badSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WI
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
+void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     bool isSorted = false;
     int i = 0, fps = STDFPS;
 
     bottom bottom;
     side side;
-    element array[DIM];
+    element array[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'O', &bottom, &side);
 
@@ -443,7 +427,7 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
 
         isSorted = true;
 
-        for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
+        for (i = 0; i < dim-1 && !WindowShouldClose();){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[i].value > array[i+1].value){
@@ -451,20 +435,19 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
                     isSorted = false;
                     algorithm->swaps++;
                 }
-                
-                i += 2;
-
                 algorithm->comparison++;
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "oddEvenSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
+
+            if (*playing)
+                i += 2;
         }
 
-        for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER)-1 && !WindowShouldClose();){
+        for (i = 1; i < dim-2 && !WindowShouldClose();){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[i].value > array[i+1].value){
@@ -474,29 +457,28 @@ void oddEvenSort(bool* playing, button topBar[], algorithm *algorithm, int SCREE
                 }
 
                 algorithm->comparison++;
-                                
-                i += 2;
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "oddEvenSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
+
+            if (*playing)
+                i += 2;
         }
     }
-
     
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int n = (int)(SCREEN_WIDTH/DIVIDER), start = 0, i, fps = STDFPS, end = n-1;
+void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+    int n = dim, start = 0, i, fps = STDFPS, end = n-1;
     bool swapped = true;
 
     bottom bottom;
     side side;
-    element array[DIM];
+    element array[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'H', &bottom, &side);
 
@@ -513,15 +495,15 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
                     algorithm->swaps++;
                 }
                 algorithm->comparison++;
-
-                i += 1;
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "cocktailShakerSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
+
+            if (*playing)
+                i++;
         }
 
         if (!swapped) {break;}
@@ -538,15 +520,15 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
                     algorithm->swaps++;
                 }
                 algorithm->comparison++;
-
-                i -= 1;
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "cocktailShakerSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
+
+            if (*playing)
+                i--;
         }
 
         start += 1;
@@ -556,13 +538,13 @@ void shakerSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int ii = 0, a = (int)(SCREEN_WIDTH/DIVIDER), fps = STDFPS;
+void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+    int ii = 0, a = dim, fps = STDFPS;
     bool isSorted = false;
 
     bottom bottom;
     side side;
-    element array[DIM];
+    element array[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'B', &bottom, &side);
 
@@ -579,15 +561,15 @@ void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
                     algorithm->swaps++;
                 }
                 algorithm->comparison++;
-
-                ii++;
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, ii, ii, bottom, &side, &fps, algorithm, "bubbleSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
+
+            if (*playing)
+                ii++;
         }
 
         a--;
@@ -597,18 +579,18 @@ void bubbleSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
+void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int index = 1, fps = STDFPS;
 
     bottom bottom;
     side side;
-    element array[DIM];
+    element array[dim];
 
     setArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
     setBottom(array, &bottom, SCREEN_WIDTH, SCREEN_HEIGHT);
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'G', &bottom, &side);
 
-    while (!WindowShouldClose() && index < (int)(SCREEN_WIDTH/DIVIDER)){
+    while (!WindowShouldClose() && index < dim){
         if (*playing){
             while (index != 0 && array[index].value < array[index-1].value){
                 algorithm->forCicles++;
@@ -619,31 +601,31 @@ void gnomeSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
             }
 
             algorithm->forCicles++;
-
-            index += 1;
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, index, index, bottom, &side, &fps, algorithm, "gnomeSort");
         if (IsKeyDown(KEY_ENTER)){
-            
             return;
         }
+
+        if (*playing)
+            index++;
     }
 
     
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
+void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int i = 0, ii, fps = STDFPS;
     
     bottom bottom;
     side side;
-    element array[DIM];
+    element array[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'I', &bottom, &side);
 
-    while (!WindowShouldClose() && i < (int)(SCREEN_WIDTH/DIVIDER)) {
+    while (!WindowShouldClose() && i < dim) {
         algorithm->forCicles++;
         ii = i;
 
@@ -651,140 +633,144 @@ void insertionSort(bool* playing, button topBar[], algorithm *algorithm, int SCR
             if (*playing){
                 algorithm->forCicles++;
                 swap(&array[ii].value, &array[ii-1].value);
-                ii -= 1;
                 algorithm->swaps++;
+
+                ii--;
                 algorithm->comparison++;
             }
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "insertionSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
         }
-
-        i += 1;
+        i++;
     }
-    
     
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
+void countingSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int max = 0, fps = STDFPS, i;
-    int count[DIM];
+    int count[dim];
 
     bottom bottom;
     side side;
-    element array[DIM], output[DIM];
+    element array[dim], output[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'C', &bottom, &side);
 
     max = array[0].value;
 
-    for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
+    for (i = 1; i < dim && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             if (array[i].value > max)
                 max = array[i].value;
-            i++;
-
+            
             algorithm->comparison++;
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
         if (IsKeyDown(KEY_ENTER)){
-            
             return;
         }
+
+        if (*playing)
+            i++;
     }
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
+    for (i = 0; i < dim && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             count[i] = 0;
-            i++;
+            
             algorithm->writesSecond++;
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
         if (IsKeyDown(KEY_ENTER)){
-            
             return;
         }
+
+        if (*playing)
+            i++;
     }
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
+    for (i = 0; i < dim && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             count[array[i].value]++;
-            i++;
             algorithm->writesSecond++;
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
         if (IsKeyDown(KEY_ENTER)){
-            
             return;
         }
+
+        if (*playing)
+            i++;
     }
 
     for (i = 1; i <= max && !WindowShouldClose();) {
         if (*playing){
             algorithm->forCicles++;
             count[i] += count[i-1];
-            i++;
             algorithm->writesSecond++;
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
         if (IsKeyDown(KEY_ENTER)){
-            
             return;
         }
+
+        if (*playing)
+            i++;
     }
 
-    for (i = (int)(SCREEN_WIDTH/DIVIDER)-1; i >= 0 && !WindowShouldClose();){
+    for (i = dim-1; i >= 0 && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             output[count[array[i].value] - 1].value = array[i].value;
             count[array[i].value]--;
-            i--;
             algorithm->writesSecond += 2;
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
         if (IsKeyDown(KEY_ENTER)){
-            
             return;
         }
+
+        if (*playing)
+            i--;
     }
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER) && !WindowShouldClose();){
+    for (i = 0; i < dim && !WindowShouldClose();){
         if (*playing){
             algorithm->forCicles++;
             array[i].value = output[i].value;
-            i++;
             algorithm->writesMain++;
         }
 
         betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "countingSort");
         if (IsKeyDown(KEY_ENTER)){
-            
             return;  
         }
+
+        if (*playing)
+            i++;
     }
 
-    
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int n = DIM, fps = STDFPS, interval, i, temp, ii;
+void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+    int n = dim, fps = STDFPS, interval, i, temp, ii;
 
     bottom bottom;
     side side;
-    element array[DIM];
+    element array[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 's', &bottom, &side);
 
@@ -798,15 +784,16 @@ void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
                 if (*playing){
                     algorithm->forCicles++;
                     array[ii].value = array[ii - interval].value;
-                    ii -= interval;
                     algorithm->writesMain++;
                 }
 
                 betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, ii, bottom, &side, &fps, algorithm, "shellSort");
                 if (IsKeyDown(KEY_ENTER)){
-                    
                     return;  
                 }
+
+                if (*playing)
+                    ii -= interval;
             }
 
             array[ii].value = temp;
@@ -818,25 +805,22 @@ void shellSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_
     through(array, playing, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
-void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT, const int DIM){
-    int fps = STDFPS, gap = DIM, i;
+void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_WIDTH, int SCREEN_HEIGHT){
+    int fps = STDFPS, gap = dim, i;
     bool swapped = true;
-    clock_t end, begin, result = 0;
-
+    
     bottom bottom;
     side side;
-    element array[DIM];
+    element array[dim];
 
     sortingInit(SCREEN_WIDTH, SCREEN_HEIGHT, array, 'c', &bottom, &side);
-
-    begin = clock();
 
     while (gap != 1 || swapped){
         algorithm->forCicles++;
         gap = nextGap(gap);
         swapped = false;
 
-        for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER)-gap && !WindowShouldClose();){
+        for (i = 0; i < dim-gap && !WindowShouldClose();){
             if (*playing){
                 algorithm->forCicles++;
                 if (array[i].value > array[i+gap].value){
@@ -845,19 +829,15 @@ void combSort(bool* playing, button topBar[], algorithm *algorithm, int SCREEN_W
                     algorithm->swaps++;
                 }
                 algorithm->comparison++;
-                i++;
             }
-
-            end = clock();
-            result += end-begin;
 
             betterSortingCode(array, topBar, playing, SCREEN_WIDTH, SCREEN_HEIGHT, i, i, bottom, &side, &fps, algorithm, "combSort");
             if (IsKeyDown(KEY_ENTER)){
-                
                 return;
             }
 
-            begin = clock();
+            if (*playing)
+                i++;
         }
     }
 
@@ -975,38 +955,27 @@ void catchFullScreen(int *SCREEN_WIDTH, int *SCREEN_HEIGHT){
 //---------------------------
 
 void through(element array[], bool* playing, int SCREEN_WIDTH, int SCREEN_HEIGHT){
-    //if an array is sorted it goes through it with an index and it checks if it is sorted
-    //SE
-
     int i;
     *playing = true;
 
-    Rectangle iiRect;
-
     SetTargetFPS(STDFPS);
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++)
+    for (i = 0; i < dim; i++)
         array[i].color = WHITE;
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER)-1 && !WindowShouldClose(); i = i){
+    for (i = 0; i < dim-1 && !WindowShouldClose(); i++){
+        array[i].color = BLUE;
 
-        iiRect.x = array[i].Rect.x;
-        iiRect.y = array[i].Rect.y;
-        iiRect.height = array[i].Rect.height;
-        iiRect.width = array[i].Rect.width;
-        
+        BeginDrawing();
+            ClearBackground(BLACK);
+            drawArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
+        EndDrawing();
+
         if (array[i+1].value >= array[i].value){
             array[i].color = GREEN;
         }else{
             array[i].color = RED;
         }
-        i += 1;
-
-        BeginDrawing();
-            ClearBackground(BLACK);
-            drawArray(array, iiRect, SCREEN_WIDTH, SCREEN_HEIGHT);
-        EndDrawing();
-
     }
 }
 
@@ -1122,7 +1091,7 @@ bool checkSorted(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int i;
     bool ret = true;
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
+    for (i = 0; i < dim; i++){
         if (array[i].value > array[i+1].value)
             ret = false;
     }
@@ -1135,21 +1104,15 @@ void drawAll(element array[], button topBar[], char sort[], int i, int ii, botto
     int c;
     int fntSize = DIVIDER;
 
-    //index rectangle
-    Rectangle iiRect;
-
-    iiRect.x = array[ii].Rect.x;
-    iiRect.y = array[ii].Rect.y;
-    iiRect.height = array[ii].Rect.height;
-    iiRect.width = array[ii].Rect.width;
-
-    for (c = 0; c < (int)(SCREEN_WIDTH/DIVIDER); c++){
+    for (c = 0; c < dim; c++){
         array[c].color = WHITE;
     }
 
+    array[ii].color = BLUE;
+
     BeginDrawing();
         ClearBackground(BLACK);
-        drawArray(array, iiRect, SCREEN_WIDTH, SCREEN_HEIGHT);
+        drawArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
         drawTopBar(topBar, SCREEN_WIDTH, SCREEN_HEIGHT);
         drawBox(algorithm);
         drawUpdateBottom(array, i, ii, bottom);
@@ -1157,6 +1120,8 @@ void drawAll(element array[], button topBar[], char sort[], int i, int ii, botto
 
         DrawTextEx(font, sort, (Vector2){5, 5}, 40, 3, DARKGRAY);
     EndDrawing();
+
+    array[ii].color = WHITE;
 }
 
 void setBottom(element array[], bottom *bottom, int SCREEN_WIDTH, int SCREEN_HEIGHT){
@@ -1260,15 +1225,15 @@ void manageAnimation(side *side, element *array, button button, bool *playing, i
 
     if (CheckCollisionRecs(side->mouse, button.Rect) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
         if (side->blackRect.x > (float)SCREEN_WIDTH/2)
-            side->blackRect.x -= DIVIDER*100*GetFrameTime();
+            side->blackRect.x -= 2500*GetFrameTime();
 
     }else if (side->blackRect.x < SCREEN_WIDTH)
-        side->blackRect.x += DIVIDER*100*GetFrameTime();
+        side->blackRect.x += 2500*GetFrameTime();
 
     if (side->blackRect.x+side->blackRect.width < SCREEN_WIDTH)
         side->blackRect.x = SCREEN_WIDTH-side->blackRect.width;
 
-    for (i = 0; i < (int)(SCREEN_WIDTH/DIVIDER); i++){
+    for (i = 0; i < dim; i++){
         if (CheckCollisionRecs(side->mouse, array[i].Rect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
             clickAnimation(array[i], playing, side->mouse, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
@@ -1285,7 +1250,7 @@ void drawSide(side side){
 int getMax(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int max = array[0].value, i;
 
-    for (i = 1; i < (int)(SCREEN_WIDTH/DIVIDER); i++)
+    for (i = 1; i < dim; i++)
         if (array[i].value > max)
             max = array[i].value;
     
