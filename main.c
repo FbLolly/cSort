@@ -112,7 +112,7 @@ void drawArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     int i;
 
     for (i = 0; i < dim; i++){
-        array[i].Rect = (Rectangle){i*DIVIDER, (SCREEN_HEIGHT-(array[i].value*DIVIDER))+(DIVIDER*2), DIVIDER, array[i].value*DIVIDER};
+        array[i].Rect = (Rectangle){(float)i*DIVIDER, (float)(SCREEN_HEIGHT-(array[i].value*DIVIDER))+(DIVIDER*2), (float)DIVIDER, (float)array[i].value*DIVIDER};
 
         //draw the array
         DrawRectangleRec(array[i].Rect, array[i].color);
@@ -120,7 +120,7 @@ void drawArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
     }
 
     for (i = 0; i < dim; i++){
-        array[i].bottomRect = (Rectangle){DIVIDER*i, SCREEN_HEIGHT-(DIVIDER*3), DIVIDER, DIVIDER};
+        array[i].bottomRect = (Rectangle){(float)DIVIDER*i, (float)(SCREEN_HEIGHT-(DIVIDER*3)), (float)DIVIDER, (float)DIVIDER};
 
         //draw the bottom part of the array
         DrawRectangleRec(array[i].bottomRect, PINK);
@@ -886,7 +886,7 @@ void settings(){
         BeginDrawing();
             ClearBackground(LIGHTGRAY);
             
-            DrawTexture(DIVIDER_slider.Texture, DIVIDER_slider.Rect.x, DIVIDER_slider.Rect.y, WHITE);
+            DrawTexture(DIVIDER_slider.texture, DIVIDER_slider.Rect.x, DIVIDER_slider.Rect.y, WHITE);
             DrawTextEx(font, TextFormat("DIVIDER (2 - 40): %d (ENTER to save and exit)",DIVIDER), (Vector2) {10+500+20, 10}, 25, 0, BLACK);
             DrawRectangle(DIVIDER_slider.slider.x, DIVIDER_slider.slider.y, DIVIDER_slider.slider.width, DIVIDER_slider.slider.height, BLACK);
         EndDrawing();
@@ -897,9 +897,9 @@ void settings(){
 void setDeviderSlider(slider *slider){
     //SE
 
-    slider->Image = LoadImage("images/slider.png");
-    slider->Texture = LoadTextureFromImage(slider->Image);
-    UnloadImage(slider->Image);
+    slider->image = LoadImage("images/slider.png");
+    slider->texture = LoadTextureFromImage(slider->image);
+    UnloadImage(slider->image);
     slider->Rect.height = 25;
     slider->Rect.width = 500;
     slider->Rect.x = 10;
@@ -1127,22 +1127,22 @@ void drawAll(element array[], button topBar[], char sort[], int i, int ii, botto
 void setBottom(element array[], bottom *bottom, int SCREEN_WIDTH, int SCREEN_HEIGHT){
     //draws the bottom part in the sorting screen
 
-    bottom->Image = LoadImage("images/arrow.png");
-    bottom->Texture = LoadTextureFromImage(bottom->Image);
+    bottom->image = LoadImage("images/arrow.png");
+    bottom->texture = LoadTextureFromImage(bottom->image);
 
-    bottom->Rect.x = array[0].bottomRect.x;
-    bottom->Rect.y = SCREEN_HEIGHT-(DIVIDER*2);
-    bottom->Rect.height = DIVIDER;
-    bottom->Rect.width = DIVIDER;
+    bottom->rect.x = array[0].bottomRect.x;
+    bottom->rect.y = SCREEN_HEIGHT-(DIVIDER*2);
+    bottom->rect.height = DIVIDER;
+    bottom->rect.width = DIVIDER;
 
-    UnloadImage(bottom->Image);
+    UnloadImage(bottom->image);
 }
 
 void drawUpdateBottom(element array[], int i, int ii, bottom *bottom){
-    bottom->Rect.x = array[ii].bottomRect.x;
+    bottom->rect.x = array[ii].bottomRect.x;
 
-    if (bottom->Rect.x != 0)
-        DrawTexture(bottom->Texture, bottom->Rect.x, bottom->Rect.y, WHITE);
+    if (bottom->rect.x != 0)
+        DrawTexture(bottom->texture, bottom->rect.x, bottom->rect.y, WHITE);
 }
 
 void setSideAnimation(side *side, char type, int SCREEN_WIDTH, int SCREEN_HEIGHT){
@@ -1160,59 +1160,59 @@ void setSideAnimation(side *side, char type, int SCREEN_WIDTH, int SCREEN_HEIGHT
 
     switch (type) {
         case 'S':
-            side->Image = LoadImage("images/sort/selectionSort.png");
+            side->image = LoadImage("images/sort/selectionSort.png");
             side->imgX = 200;
             side->imgY = 100;
         break;
         case 'B':
-            side->Image = LoadImage("images/sort/bubbleSort.png");
+            side->image = LoadImage("images/sort/bubbleSort.png");
             side->imgX = 155;
             side->imgY = 65;
         break;
         case 'b':
-            side->Image = LoadImage("images/sort/badSort.png");
+            side->image = LoadImage("images/sort/badSort.png");
             side->imgX = 145;
             side->imgY = 55;
         break;
         case 'O':
-            side->Image = LoadImage("images/sort/oddEvenSort.png");
+            side->image = LoadImage("images/sort/oddEvenSort.png");
             side->imgX = 170;
             side->imgY = 20;
         break;
         case 'H':
-            side->Image = LoadImage("images/sort/shakerSort.png");
+            side->image = LoadImage("images/sort/shakerSort.png");
             side->imgX = 225;
             side->imgY = 10;
         break;
         case 'G':
-            side->Image = LoadImage("images/sort/gnomeSort.png");
+            side->image = LoadImage("images/sort/gnomeSort.png");
             side->imgX = 160;
             side->imgY = 75;
         break;
         case 'I':
-            side->Image = LoadImage("images/sort/insertionSort.png");
+            side->image = LoadImage("images/sort/insertionSort.png");
             side->imgX = 140;
             side->imgY = 60;
         break;
         case 'C':
-            side->Image = LoadImage("images/sort/countSort.png");
+            side->image = LoadImage("images/sort/countSort.png");
             side->imgX = 90;
             side->imgY = 50;
         break;
         case 's':
-            side->Image = LoadImage("images/sort/shellSort.png");
+            side->image = LoadImage("images/sort/shellSort.png");
             side->imgX = 50;
             side->imgY = 220;
         break;
         case 'c':
-            side->Image = LoadImage("images/sort/combSort.png");
+            side->image = LoadImage("images/sort/combSort.png");
             side->imgX = 200;
             side->imgY = 50;
         break;
     }
 
-    side->Texture = LoadTextureFromImage(side->Image);
-    UnloadImage(side->Image);
+    side->texture = LoadTextureFromImage(side->image);
+    UnloadImage(side->image);
 }
 
 void manageAnimation(side *side, element *array, button button, bool *playing, int SCREEN_WIDTH, int SCREEN_HEIGHT){
@@ -1240,11 +1240,11 @@ void manageAnimation(side *side, element *array, button button, bool *playing, i
     }
 }
 
-//SE --
+//--
 
 void drawSide(side side){
     DrawRectangleRec(side.blackRect, DARKGRAY);
-    DrawTexture(side.Texture, side.blackRect.x+side.imgX, side.imgY, WHITE);
+    DrawTexture(side.texture, side.blackRect.x+side.imgX, side.imgY, WHITE);
 }
 
 int getMax(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
@@ -1329,7 +1329,7 @@ void clickAnimation(element clicked, bool *playing, Rectangle mouse, int SCREEN_
             ClearBackground(LIGHTGRAY);
 
             DrawTexture(txt, (SCREEN_WIDTH/2)-(250), pos, WHITE);
-            DrawTextEx(font, TextFormat("value: %d (ESC to exit)", clicked.value-5), (Vector2){((float)SCREEN_WIDTH/2)-220, pos+250-20}, 40, 1, BLACK);
+            DrawTextEx(font, TextFormat("value: %d (ESC to exit)", clicked.value-5), (Vector2){((float)SCREEN_WIDTH/2)-220, (float)(pos+250-20)}, 40, 1, BLACK);
         EndDrawing();
 
         if (pos > ((SCREEN_HEIGHT/2)-250) && animation){

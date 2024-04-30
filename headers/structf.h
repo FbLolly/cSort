@@ -23,16 +23,16 @@ typedef struct{
 }button;
 
 typedef struct{
-    Image Image;
-    Texture Texture;
-    Rectangle Rect;
+    Image image;
+    Texture texture;
+    Rectangle rect;
 }bottom;
 
 typedef struct{
     Rectangle blackRect;
     Rectangle mouse;
-    Image Image;
-    Texture Texture;
+    Image image;
+    Texture texture;
     int imgX;
     int imgY;
 }side;
@@ -57,8 +57,8 @@ typedef struct{
 
 typedef struct{
     Rectangle Rect;
-    Texture Texture;
-    Image Image;
+    Texture texture;
+    Image image;
     Rectangle slider;
 }slider;
 
