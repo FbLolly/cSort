@@ -104,7 +104,7 @@ void setArray(element array[], int SCREEN_WIDTH, int SCREEN_HEIGHT){
         array[i].color = WHITE;
     
         if (array[i].value < 1)
-            array[i].value = 6;   
+            array[i].value = 6;
     }
 }
 
@@ -1115,7 +1115,6 @@ void drawAll(element array[], button topBar[], char sort[], int i, int ii, botto
         drawArray(array, SCREEN_WIDTH, SCREEN_HEIGHT);
         drawTopBar(topBar, SCREEN_WIDTH, SCREEN_HEIGHT);
         drawBox(algorithm);
-        drawUpdateBottom(array, i, ii, bottom);
         drawSide(side);
 
         DrawTextEx(font, sort, (Vector2){5, 5}, 40, 3, DARKGRAY);
@@ -1125,24 +1124,11 @@ void drawAll(element array[], button topBar[], char sort[], int i, int ii, botto
 }
 
 void setBottom(element array[], bottom *bottom, int SCREEN_WIDTH, int SCREEN_HEIGHT){
-    //draws the bottom part in the sorting screen
-
-    bottom->image = LoadImage("images/arrow.png");
-    bottom->texture = LoadTextureFromImage(bottom->image);
-
+    //bottom part (black line with values) setup
     bottom->rect.x = array[0].bottomRect.x;
     bottom->rect.y = SCREEN_HEIGHT-(DIVIDER*2);
     bottom->rect.height = DIVIDER;
     bottom->rect.width = DIVIDER;
-
-    UnloadImage(bottom->image);
-}
-
-void drawUpdateBottom(element array[], int i, int ii, bottom *bottom){
-    bottom->rect.x = array[ii].bottomRect.x;
-
-    if (bottom->rect.x != 0)
-        DrawTexture(bottom->texture, bottom->rect.x, bottom->rect.y, WHITE);
 }
 
 void setSideAnimation(side *side, char type, int SCREEN_WIDTH, int SCREEN_HEIGHT){
