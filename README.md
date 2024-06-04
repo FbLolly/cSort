@@ -22,9 +22,9 @@ cSorts GUI is pretty straight forward but here are some things I wanted to speci
 --- in the menu you can either choose a sorting algorithm to watch or go into the settings where you can change the DIVIDER value using a slider (the bigger the DEVIDER value is the smaller the arrays will be)
 
 --- in the actual sorting algorithm demo you can pause with SPACE or by pressing the pause and play button and you can raise or lower the FPS using the left and right arrows or by clicking the proper buttons. It is also possible to move the mouse to the right and hold left click to make a demo of the sorting code appear.
-    You can now also click on an element of the array to make its value appear bigger.
+You can now also click on an element of the array to make its value appear bigger.
 
-Licence: do whatever
+Licence: see LICENCE (GNU/GPL)
 
 original author: FbLolly
 
